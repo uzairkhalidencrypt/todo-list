@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My To-Do List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">A simple full-stack example</p>
+        <h1>My To-Do List</h1>
+        <p class="lede">
+          Write a task, check it off when it is done, or throw it away.
+          The page is HTML, the look is CSS, and Python keeps the list.
+        </p>
+      </header>
+
+      <section class="card" aria-labelledby="add-heading">
+        <h2 id="add-heading">Add a task</h2>
+        <form action="{{ url_for('add_task') }}" method="post" class="add-form">
+          <label class="sr-only" for="title">Task</label>
+          <input
+            id="title"
+            name="title"
+            type="text"
+            maxlength="120"
+            placeholder="Buy milk, call mom, finish homework..."
+            autocomplete="off"
+            required
+          />
+          <button type="submit">Add</button>
+        </form>
+      </section>
+
+      <section class="card" aria-labelledby="list-heading">
+        <div class="list-header">
+          <h2 id="list-heading">Your tasks</h2>
+          <p class="count">
+            {% if remaining == 1 %}
+              1 still open
+            {% else %}
+              {{ remaining }} still open
+            {% endif %}
+          </p>
+        </div>
+
+        {% if tasks %}
+          <ul class="tasks">
+            {% for task in tasks %}
+              <li class="task {% if task.done %}is-done{% endif %}">
+                <form action="{{ url_for('toggle_task', task_id=task.id) }}" method="post">
+                  <button
+                    class="check"
+                    type="submit"
+                    aria-label="{% if task.done %}Mark '{{ task.title }}' as not done{% else %}Mark '{{ task.title }}' as done{% endif %}"
+                  >
+                    {% if task.done %}✓{% else %}○{% endif %}
+                  </button>
+                </form>
+                <span class="title">{{ task.title }}</span>
+                <form action="{{ url_for('delete_task', task_id=task.id) }}" method="post">
+                  <button class="delete" type="submit" aria-label="Delete '{{ task.title }}'">
+                    Delete
+                  </button>
+                </form>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="empty">Nothing here yet. Add your first task above.</p>
+        {% endif %}
+      </section>
+
+      <aside class="explain" aria-labelledby="explain-heading">
+        <h2 id="explain-heading">How to explain this to anyone</h2>
+        <ol>
+          <li>
+            <strong>HTML</strong> is the furniture: the heading, the text box, the list, and the buttons.
+          </li>
+          <li>
+            <strong>CSS</strong> is the paint and lighting: colors, spacing, and the rounded cards.
+          </li>
+          <li>
+            <strong>Python</strong> is the notebook in the back: it saves what you type, marks things done, and deletes them.
+          </li>
+        </ol>
+        <p>
+          When you press a button, the page sends a short message to Python.
+          Python updates the notebook, then shows you a fresh page.
+        </p>
+      </aside>
+    </main>
+  </body>
+</html>
