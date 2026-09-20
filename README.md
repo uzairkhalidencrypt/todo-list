@@ -36,3 +36,8 @@ Then open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
 | `tasks.json` | Saved tasks (created automatically) |
 
 There is no extra JavaScript. Each button is a normal HTML form that talks to Python.
+
+## Create meaningful tasks for future.
+task 1: develope full stack app for login and signup and delete user and update user
+create frontend in react or vanilla JS.
+
